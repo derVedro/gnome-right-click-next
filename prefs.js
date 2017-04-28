@@ -1,5 +1,11 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
+// Send windows one workspace down by rightclick
+// (C) 2017 Christoph "criztovyl" Schulz
+// GPLv3 and later
+//
+// Code adapted from gnome-shell-extension example extension
+//   https://git.gnome.org/browse/gnome-shell-extensions/tree/extensions/example
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const GObject = imports.gi.GObject;

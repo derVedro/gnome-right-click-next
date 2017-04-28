@@ -1,4 +1,6 @@
-
+// Send windows one workspace down by rightclick
+// (C) 2017 Christoph "criztovyl" Schulz
+// GPLv3 and later
 const Main = imports.ui.main;
 const WindowClone = imports.ui.workspace.WindowClone;
 

@@ -1,10 +1,12 @@
 {
   "name": "Right Click Down",
   "uuid": "rcd@criztovyl.space",
-  "description": "Right Click Down",
+  "extension-id": "rcd",
+  "description": "Moves windows one workspace down by rightclicking them in the overview.",
   "gettext-domain": "gnome-shell-extenions-right-click-down", 
   "settings-schema": "org.gnome.shell.extensions.right-click-down", 
+  "url": "https://gitlab.com/criztovyl/gnome-right-click-down",
   "shell-version": [
-    "3.22.3"
+      "3.10", "3.11", "3.12", "3.13", "3.14", "3.16", "3.18", "3.20", "3.22", "3.24"
   ]
 }
