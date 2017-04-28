@@ -55,7 +55,7 @@ function enable() {
             mWin.change_workspace_by_index(workspaceNr, false);
 
             if(settings.get_boolean(Prefs.SETTING_OVERLAY_CLOSE)){
-                this._selected = true
+                this._selected = true; // cancel d'n'd event
                 Main.overview.toggle();
             }
 
