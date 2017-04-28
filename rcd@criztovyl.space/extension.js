@@ -17,7 +17,6 @@ function injectToFunction(parent, name, func) {
         let ret;
         ret = func.apply(this, arguments);
         if (ret === undefined){
-            log("origin");
             ret = origin.apply(this, arguments);
         }
         return ret;
@@ -42,14 +41,15 @@ function enable() {
     log('Enabeling rcd');
 
     winInject['_onClicked'] = injectToFunction(WindowClone.prototype, '_onClicked', function(action, actor){
-        if(action.get_button() == 3){ // cycle
-            // right click
+        if(action.get_button() == 3){ // right click
+
             let mWin = this.realWindow.get_meta_window(),
                 workspaceNr = mWin.get_workspace().index() + 1;
 
             log("rcd","nr", workspaceNr, "n_workspaces", global.screen.n_workspaces);
 
-            if(workspaceNr == global.screen.n_workspaces)
+            // cycle
+            if(workspaceNr == global.// cyclescreen.n_workspaces)
                 workspaceNr = 0;
 
             mWin.change_workspace_by_index(workspaceNr, false);
