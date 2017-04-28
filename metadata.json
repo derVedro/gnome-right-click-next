@@ -1,0 +1,10 @@
+{
+  "name": "Right Click Down",
+  "uuid": "rcd@criztovyl.space",
+  "description": "Right Click Down",
+  "gettext-domain": "gnome-shell-extenions-right-click-down", 
+  "settings-schema": "org.gnome.shell.extensions.right-click-down", 
+  "shell-version": [
+    "3.22.3"
+  ]
+}
