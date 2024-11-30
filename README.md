@@ -1,7 +1,5 @@
-# Right Click Down
+# Right Click Next
 
-Send windows one workspace down by rightclicking them in the overview.
+**Gnome extension for sending windows to the next workspace by right-clicking them in the overview.**
 
-Settings:
-
--  `org/gnome/shell/extensions/right-click-down/close-overview`: Close overview after click.
+This is a Gnome 45 ready fork of an older extension [Right Click Down](https://gitlab.com/criztovyl/gnome-right-click-down) by [criztovyl](https://github.com/criztovyl).  
