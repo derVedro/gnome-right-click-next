@@ -1,12 +1,9 @@
 {
-  "name": "Right Click Down",
-  "uuid": "rcd@criztovyl.space",
-  "extension-id": "rcd",
-  "description": "Moves windows one workspace down by rightclicking them in the overview.",
-  "gettext-domain": "gnome-shell-extenions-right-click-down", 
-  "settings-schema": "org.gnome.shell.extensions.right-click-down", 
-  "url": "https://gitlab.com/criztovyl/gnome-right-click-down",
+  "name": "Right Click Next",
+  "uuid": "right-click-next@derVedro",
+  "description": "Move windows to the next workspace by right-clicking them in the overview.",
+  "url": "https://github.com/derVedro/gnome-right-click-next",
   "shell-version": [
-      "40.alpha.1.1", "40.alpha.1", "40.alpha", "3.38.3", "3.38.2", "3.38.1", "3.38.0", "3.37.92", "3.37.91", "3.37.90", "3.37.3"
+      "45", "46", "47"
   ]
 }
