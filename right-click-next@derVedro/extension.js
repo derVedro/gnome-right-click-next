@@ -12,12 +12,8 @@ import {
 
 export default class RightClickNext extends Extension {
 
-    constructor(metadata) {
-        super(metadata);
-        this._injectionManager = new InjectionManager();
-    }
-
     enable() {
+        this._injectionManager = new InjectionManager();
         this._injectionManager.overrideMethod(WindowPreview.prototype, "_init",
             originalMethod => {
                 return function (...args){
@@ -49,6 +45,7 @@ export default class RightClickNext extends Extension {
 
     disable() {
         this._injectionManager.clear();
+        this._injectionManager = null;
     }
 
 }
