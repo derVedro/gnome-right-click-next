@@ -4,6 +4,6 @@
   "description": "Move windows to the next workspace by right-clicking them in the overview.",
   "url": "https://github.com/derVedro/gnome-right-click-next",
   "shell-version": [
-      "45", "46", "47"
+      "45", "46", "47", "48"
   ]
 }
