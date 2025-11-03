@@ -1,51 +1,58 @@
 // Send window to the next workspace by rightclick
 // (C) 2017, 2020, 2021 Christoph "criztovyl" Schulz
-// (C) 2024 derVedro
+// (C) 2024, 2025 derVedro
 // GPLv3 and later
 
-import {WindowPreview} from 'resource:///org/gnome/shell/ui/windowPreview.js';
-import GObject from 'gi://GObject';
+import Clutter from 'gi://Clutter';
 import {
     Extension,
     InjectionManager
 } from 'resource:///org/gnome/shell/extensions/extension.js';
+import { Workspace } from 'resource:///org/gnome/shell/ui/workspace.js';
 
 export default class RightClickNext extends Extension {
+    #injectionManager;
 
     enable() {
-        this._injectionManager = new InjectionManager();
-        this._injectionManager.overrideMethod(WindowPreview.prototype, "_init",
-            originalMethod => {
-                return function (...args){
-                    originalMethod.call(this, ...args);
-
-                    let clickAction = this.get_actions().find(a => GObject.type_name(a) == "ClutterClickAction");
-                    let clickHandlerId = GObject.signal_handler_find(clickAction, {signalId: "clicked"});
-                    clickAction.disconnect(clickHandlerId);
-                    clickAction.connect("clicked", function (action, actor) {
-                        if (action.get_button() == 3) { // right click
-                            let mWin = this._windowActor.get_meta_window(),
-                                workspaceNr = mWin.get_workspace().index() + 1,
-                                n_workspaces = global.workspace_manager.n_workspaces;
-                            if (workspaceNr == n_workspaces) // cycle
-                                workspaceNr = 0;
-                            mWin.change_workspace_by_index(workspaceNr, false);
-
-                        } else {
-                            if (this._activate != undefined) {
-                                this._activate();
-                            } else {
-                                this._onClicked(action, actor);
-                            }
-                        }
-                    }.bind(this));
-                }
-            });
+        this.#injectionManager = new InjectionManager();
+        this.#patchClickHandler();
     }
 
     disable() {
-        this._injectionManager.clear();
-        this._injectionManager = null;
+        this.#injectionManager.clear();
+        this.#injectionManager = null;
     }
 
-}
+    #patchClickHandler() {
+        // Patch _addWindowClone to override click handler for window clones (window previews).
+        this.#injectionManager.overrideMethod(Workspace.prototype, '_addWindowClone',
+            original => function () {
+                let clone = original.apply(this, arguments);
+
+                clone.connect('captured-event', (_actor, event) => {
+                    if (event.type() === Clutter.EventType.BUTTON_RELEASE) {
+                        if (event.get_button() === 3) {  // Right click
+                            const metaWindow = clone.metaWindow;
+                            const currentWorkspace = metaWindow.get_workspace();
+                            const workspaceManager = global.workspace_manager;
+
+                            let currentIndex = currentWorkspace.index();
+                            let workspaceCount = workspaceManager.n_workspaces;
+
+                            let nextIndex = (currentIndex + 1) % workspaceCount;
+                            let nextWorkspace = workspaceManager.get_workspace_by_index(nextIndex);
+
+                            // Move the window to the next workspace
+                            metaWindow.change_workspace(nextWorkspace);
+
+                            // Optionally, focus on the moved window
+                            metaWindow.focus(global.get_current_time());
+                        }
+                    }
+                });
+
+                return clone;
+            }
+        );
+    }
+};
