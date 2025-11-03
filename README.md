@@ -1,4 +1,4 @@
-# Right Click Next
+# <img src="./right-click-next.svg" width="508" height="72"/>
 
 **Gnome extension for sending windows to the next workspace by right-clicking them in the overview.**
 
