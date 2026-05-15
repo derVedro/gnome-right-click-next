@@ -12,6 +12,7 @@ import { Workspace } from 'resource:///org/gnome/shell/ui/workspace.js';
 
 export default class RightClickNext extends Extension {
     #injectionManager;
+    #signalHandlers = new WeakMap();
 
     enable() {
         this.#injectionManager = new InjectionManager();
@@ -29,7 +30,7 @@ export default class RightClickNext extends Extension {
             original => function () {
                 let clone = original.apply(this, arguments);
 
-                clone.connect('captured-event', (_actor, event) => {
+                const handlerId = clone.connect('captured-event', (_actor, event) => {
                     if (event.type() === Clutter.EventType.BUTTON_RELEASE) {
                         if (event.get_button() === 3) {  // Right click
                             const metaWindow = clone.metaWindow;
@@ -50,6 +51,8 @@ export default class RightClickNext extends Extension {
                         }
                     }
                 });
+
+                this.#signalHandlers.set(clone, handlerId);
 
                 return clone;
             }
