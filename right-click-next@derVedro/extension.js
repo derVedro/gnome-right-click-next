@@ -12,7 +12,7 @@ import { Workspace } from 'resource:///org/gnome/shell/ui/workspace.js';
 
 export default class RightClickNext extends Extension {
     #injectionManager;
-    #signalHandlers = new WeakMap();
+    #signalHandlers = new Map();
 
     enable() {
         this.#injectionManager = new InjectionManager();
@@ -20,16 +20,22 @@ export default class RightClickNext extends Extension {
     }
 
     disable() {
+        for (const [clone, handlerId] of this.#signalHandlers) {
+            if (clone && handlerId) {
+                clone.disconnect(handlerId);
+            }
+        }
+        this.#signalHandlers.clear();
         this.#injectionManager.clear();
         this.#injectionManager = null;
     }
 
     #patchClickHandler() {
+        const extension = this;
         // Patch _addWindowClone to override click handler for window clones (window previews).
         this.#injectionManager.overrideMethod(Workspace.prototype, '_addWindowClone',
             original => function () {
                 let clone = original.apply(this, arguments);
-
                 const handlerId = clone.connect('captured-event', (_actor, event) => {
                     if (event.type() === Clutter.EventType.BUTTON_RELEASE) {
                         if (event.get_button() === 3) {  // Right click
@@ -52,7 +58,7 @@ export default class RightClickNext extends Extension {
                     }
                 });
 
-                this.#signalHandlers.set(clone, handlerId);
+                extension.#signalHandlers.set(clone, handlerId);
 
                 return clone;
             }
